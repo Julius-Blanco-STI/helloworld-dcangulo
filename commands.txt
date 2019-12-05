@@ -1,0 +1,109 @@
+document.cookie = "userToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+document.cookie = "explorerToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+
+([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c => (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16))
+
+cd node_modules/react-native/third-party/glog-0.3.4 && ./configure && make && make install && cd ../../../../
+
+Access Key ID:
+AKIAIM4QH4TRNUZNX2KA
+Secret Access Key:
+Qtmk57+85lhWU3CEoS8lNb8co0ZPe9SzmD+6FTnY
+
+
+SERVER
+ssh root@ipaddress
+adduser <username>
+usermod -aG sudo <username>
+logout root
+login <username>
+sudo nano /etc/ssh/sshd_config
+PermitRootLogin yes -> no
+sudo service ssh restart
+sudo chown <username>:<username> /var/www/
+
+NGINX
+sudo apt update
+sudo apt install nginx
+
+PHP
+sudo apt update
+sudo apt install php php-common
+sudo apt install php-fpm php-mbstring php-xmlrpc php-soap php-gd php-xml php-intl php-mysql php-cli php-ldap php-zip php-curl
+
+GIT
+sudo apt update
+sudo apt install git
+ssh-keygen -t rsa -b 4096 -C "youremail@example.com"
+cat ~/.ssh/id_rsa.pub
+Copy output
+Add SSH -> https://github.com/settings/keys
+
+COMPOSER
+sudo apt update
+sudo apt install curl php-cli php-mbstring git unzip
+cd ~
+curl -sS https://getcomposer.org/installer -o composer-setup.php
+HASH=48e3236262... (get hash here -> https://getcomposer.org/download/)
+php -r "if (hash_file('SHA384', 'composer-setup.php') === '$HASH') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+
+MYSQL
+cd /tmp
+wget https://dev.mysql.com/get/mysql-apt-config_0.8.13-1_all.deb
+sudo apt install ./mysql-apt-config_0.8.13-1_all.deb
+SELECT OK BY PRESSING TAB AND HIT ENTER
+sudo apt update
+sudo apt install mysql-server
+sudo mysql_secure_installation
+sudo apt-get install libmysqlclient-dev
+sudo rm /tmp/mysql-apt-config_0.8.13-1_all.deb
+
+ADD SITE
+cd /var/www
+sudo mkdir example.com subdomain.example.com
+sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/example.com
+sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/subdomain.example.com
+sudo ln -s /etc/nginx/sites-available/example.com /etc/nginx/sites-enabled/example.com
+sudo ln -s /etc/nginx/sites-available/subdomain.example.com /etc/nginx/sites-enabled/subdomain.example.com
+sudo rm /etc/nginx/sites-available/default
+sudo rm /etc/nginx/sites-enabled/default
+* remove default_server for subdomain
+
+PASSWORD PROTECT SITE
+sudo sh -c "echo -n 'dcangulo:' >> /etc/nginx/.htpasswd"
+sudo sh -c "openssl passwd -apr1 >> /etc/nginx/.htpasswd"
+sudo nano /etc/nginx/sites-enabled/YOURSITENAME
+ADD IN location / { BELOW try_files }
+auth_basic "MESSAGE";
+auth_basic_user_file /etc/nginx/.htpasswd;
+
+RBENV
+sudo apt update
+sudo apt install git libreadline-dev zlib1g-dev libreadline-dev libncurses5-dev autoconf bison libssl-dev build-essential libyaml-dev libffi-dev libssl-dev libreadline-dev zlib1g-dev libgdbm-dev
+cd
+git clone https://github.com/rbenv/rbenv.git ~/.rbenv
+echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
+echo 'eval "$(rbenv init -)"' >> ~/.bashrc
+exec $SHELL
+git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
+echo 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' >> ~/.bashrc
+exec $SHELL
+rbenv install 2.6.1
+rbenv global 2.6.1
+
+NODEJS
+sudo apt update
+sudo apt install nodejs npm
+
+YARN
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+sudo apt update
+sudo apt install yarn
+
+CURL
+sudo apt update
+sudo apt install curl
+
